@@ -53,7 +53,7 @@ contract StorageFactory {
 // make a new variable of simplestorage
     SimpleStorage public simpleStorage;
 
-    // make a new simplestorage contract and store it in the variable.
+    // make a new simplestorage contract and override the previous made variable.
     function createSimpleStorage () public {
         simpleStorage = new SimpleStorage();
     }
