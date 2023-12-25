@@ -57,4 +57,29 @@ contract StorageFactory {
     function createSimpleStorage () public {
         simpleStorage = new SimpleStorage();
     }
+ function sfStore(uint256 _indexOfContract, uint256 _storageNumber) public{
+        //first we need to select the contract from the list, get it and set it in a variable to interact with
+        //first the type then the variable = then the list [index] because the name of the variable has to be something
+        //userdefined, uint, address etc
+        SimpleStorage thisSimpleStorage = listOfSimpleStorageContracts[_indexOfContract];
+        thisSimpleStorage.store(_storageNumber);
+
+        //there is a simpler way listOfSimpleStorageContracts[_indexOfContract].store(_storageNumber);
+        // i am not using this now because it is taking away the perspective of understanding the work
+         
+
+    }
+
+    function sfRetrieve(uint256 _indexOfContract) public view returns(uint256){
+        /*this function gets from the contract out of the list of contracts set above (listOfSimpleStorageContracts)
+        the function retrieve and executes it.
+        */
+        SimpleStorage thisSimpleStorage = listOfSimpleStorageContracts[_indexOfContract];
+        /*
+        The error you're seeing is due to the fact that you're attempting to return a function (retrieve) instead of the result of calling that function. In Solidity, functions are first-class citizens, meaning they can be assigned to variables, stored in data structures, passed as arguments to other functions, etc. But in order to execute a function, you need to call it using parentheses ().
+        Although it returns an uint256 it needs to give it inside the function hence there must be parameters after the retrieve call
+        return thisSimpleStorage.retrieve;
+        */
+        return thisSimpleStorage.retrieve();
+    }
 } 
