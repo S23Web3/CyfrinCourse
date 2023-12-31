@@ -5,7 +5,16 @@ pragma solidity  ^0.8.18;
 // remix can plug straight from github (via npm) so we get the Av3I which gives the pricefeed from chainlink decentralized
 
 //import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+
+//updates to the code. a new version than the older one in my git.
+// focus is to be more gas efficient. For example miminum usd and owner are only set once.
+// such as constant and immutable
+// next is to create customerrors as every string character takes gas, Pat left to convert all but the modifier so did I.
 import{PriceConverter} from "./PriceConverter.sol";
+
+error notEnoughETH();
+error NotOwner();
+error withdrawFail();
 
 
 contract FundMe  {
@@ -15,14 +24,15 @@ contract FundMe  {
     // it seems this way all the major math is done inside the library
     using PriceConverter for uint256;
 
-    uint256 minimumUSD = 5;
+    uint256 public constant MINIMUM_USD = 5;
     //array of funders who send us money, will be public to use and call as a blue button in remix, and use internal by a function
     address[] public funders;
-    address public owner;
+    address public immutable i_owner;
 
     // mapping how much they sent
     mapping(address funder =>uint256 amountFunded)funderAmountFunded;
 
+    
     constructor(){
         // important not to use address owner but just owner, because then a shadow variable is made.
         // then you need to do something which will cost too much gas.
@@ -30,7 +40,7 @@ contract FundMe  {
             address _owner = msg.sender;
             owner = _owner;
         */
-        owner = msg.sender;        
+        i_owner = msg.sender;        
     }
 
 
@@ -43,7 +53,7 @@ contract FundMe  {
             minimum amount required to pass 
             
         */
-        require (msg.value.getConversionRate() > minimumUSD, "did not send enough eth");
+        require (msg.value.getConversionRate() > MINIMUM_USD, "notEnoughETH");
         // add address to funders array
         funders.push(msg.sender);
         //add to mapping + whatever they previous had funded, one can also make a static list of per funding but Pat chose to aggregate.
@@ -54,8 +64,8 @@ contract FundMe  {
 
     function withdraw () public onlyOwner{
         //withdraw funds, can only be called by the owner or whoever is set in the constructor
+        // modifier checks if it is the owner.
         
-        require(msg.sender == owner,"You are not the owner calling the withdraw, withdraw denied");
         uint256 approxTotal = 0;
 
         /*
@@ -100,13 +110,33 @@ contract FundMe  {
     }
 
     modifier onlyOwner() {
-        require(msg.sender == owner,"You are not the owner calling the function");
-    
+        // old gas inefficient version require(msg.sender == i_owner,"You are not the owner calling the function");
+        if (msg.sender != i_owner) {
+            revert NotOwner();
+        }
         //this _ below means continue and is different from _tempvariable
         _;
     }
 
-}
+    
 
+    // This function is called whenever a call is made to this contract.
+    receive() external payable {
+       // This function is called for all messages sent to
+       // this contract (there is no other function).
+       // Sending Ether to this contract will cause an exception,
+       // because the fallback function does not have the `payable`
+       // modifier.
+        // when you receive ether with an empty calldata, just call the fund function.
+        fund();
+        revert("No receive function");
+    }
+    
+    fallback() external {
+        // some calldata was there but not defining any function that we have
+        revert("No fallback function");
+    }
+
+}
 
 
