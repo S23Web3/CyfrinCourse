@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # html-fund-me-f23
 
 *[⭐️ (2:37:02) | Lesson 8: HTML Fund Me](https://www.youtube.com/watch?v=sas02qSFZ74&t=9422s)*
@@ -84,3 +85,18 @@ ETH/Arbitrum/Optimism/Polygon/etc Address: 0x9680201d9c93d65a3603d2088d125e955c7
 [![Patrick Collins YouTube](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/channel/UCn-3f8tw_E1jZvhuHatROwA)
 [![Patrick Collins Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/patrickalphac/)
 [![Patrick Collins Medium](https://img.shields.io/badge/Medium-000000?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@patrick.collins_58673/)
+=======
+Hello
+
+This repo is to document all the content from the course of Patrick Collins under Cyfrin-Updraft.
+
+I should have done this with Alchemy in the beginning but since all the coding was in their web GUI it was not so needed.
+I did in the end.
+
+Back to this repo. As much as possible will I add comment lines to explain what is being done. 
+It might sound novice, it is, as I am trying to complete the novice level.
+
+Things like mappings and structs might seem logic for advanced users. For beginners I feel it does help to everytime explain what 
+the mapping or struct does for example. 
+
+>>>>>>> origin/main
